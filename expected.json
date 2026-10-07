@@ -1,0 +1,93 @@
+{
+ "_meta": {
+  "db_sha256": "52795e1c3e576344e562dcd2e1fafda05c7b5985857d754ce809cf39c55d01ca"
+ },
+ "1-01": {
+  "hash": "f355b632fa72d8292fb8948ab1caa3e540f1d6d4d1567e02bf49d29f6bd79d71",
+  "columns": [
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 5
+ },
+ "1-02": {
+  "hash": "6a6b07c1f7422dce918cce277a94ef0ea733b269a8a3b69ad7470d9b4f012b30",
+  "columns": [
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 24
+ },
+ "1-03": {
+  "hash": "b947fea9d5a307269b87b073434c38760324060a70d9b3c05bb590dadc3981b1",
+  "columns": [
+   "user_id",
+   "nickname",
+   "registered_at"
+  ],
+  "row_count": 11
+ },
+ "1-04": {
+  "hash": "324c5f031d75a90a1020e7deb32f6eba3086139bd85fc6ebfb729d309614dfd3",
+  "columns": [
+   "user_id",
+   "prefecture"
+  ],
+  "row_count": 28
+ },
+ "1-05": {
+  "hash": "286dcf4fd66fd7e273aad9987e952c944ec0b4d18f290e09a6535248720981c2",
+  "columns": [
+   "order_id",
+   "user_id",
+   "ordered_at"
+  ],
+  "row_count": 33
+ },
+ "1-06": {
+  "hash": "36506237ad9c137e8476e5da78d99c4da4f898294be6d7491b15ad5e92c7a457",
+  "columns": [
+   "order_id",
+   "ordered_at",
+   "status"
+  ],
+  "row_count": 30
+ },
+ "1-07": {
+  "hash": "d27e501f2ef9ad2d936eda2dea89445f96ce6d61d2b1386234ca2b697d2cac97",
+  "columns": [
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 13
+ },
+ "1-08": {
+  "hash": "43b3c8634ea4295db3fd76aa1ea6c12124030525d22ad288595a761c8298a171",
+  "columns": [
+   "product_id",
+   "name",
+   "price",
+   "price_with_tax"
+  ],
+  "row_count": 5
+ },
+ "1-09": {
+  "hash": "53e3f3e956dbae769f5fc7d810f6243ee4df5da2b20ece989eb1bd07e6b57be3",
+  "columns": [
+   "prefecture"
+  ],
+  "row_count": 26
+ },
+ "1-10": {
+  "hash": "069739df8f2c0019f664c6a8c3f40acddd0d5d39ebcc7105e0408d7995e750ce",
+  "columns": [
+   "user_id",
+   "nickname",
+   "birth_year"
+  ],
+  "row_count": 16
+ }
+}
