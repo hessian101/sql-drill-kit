@@ -8,5 +8,15 @@
  "1-07": {"ordered": true},
  "1-08": {"ordered": true},
  "1-09": {"ordered": false},
- "1-10": {"ordered": true}
+ "1-10": {"ordered": true},
+ "2-01": {"ordered": true},
+ "2-02": {"ordered": true},
+ "2-03": {"ordered": true},
+ "2-04": {"ordered": true},
+ "2-05": {"ordered": true},
+ "2-06": {"ordered": true},
+ "2-07": {"ordered": true},
+ "2-08": {"ordered": true},
+ "2-09": {"ordered": true},
+ "2-10": {"ordered": true}
 }

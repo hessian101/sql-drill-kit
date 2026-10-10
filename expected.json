@@ -89,5 +89,87 @@
    "birth_year"
   ],
   "row_count": 16
+ },
+ "2-01": {
+  "hash": "d55fc9bdf2d787baf9c72e95d37133466a7548ab9119dbde21c768f9808d0441",
+  "columns": [
+   "total_users",
+   "users_with_pref"
+  ],
+  "row_count": 1
+ },
+ "2-02": {
+  "hash": "ae7914f07f6d6e1799cde4b0803e1dd7cb0a2825e1b0e93676ce988b2460b966",
+  "columns": [
+   "buyer_count"
+  ],
+  "row_count": 1
+ },
+ "2-03": {
+  "hash": "750462b3852619f72acdbb2d84b33e736c9a80695874e2b89745ee3239012fc3",
+  "columns": [
+   "min_price",
+   "max_price",
+   "avg_price"
+  ],
+  "row_count": 1
+ },
+ "2-04": {
+  "hash": "b3dc85a84c222096c219228b1917262a36313b21eebb4fa91697b611e8235dd9",
+  "columns": [
+   "status",
+   "order_count"
+  ],
+  "row_count": 3
+ },
+ "2-05": {
+  "hash": "270a51b107b71250d253ab8fa6838b80011ca28488eac5a4b928c176cfedf6ee",
+  "columns": [
+   "month",
+   "order_count"
+  ],
+  "row_count": 9
+ },
+ "2-06": {
+  "hash": "bd7f10a923371fa03781e3c6cc4d701b3944f2cfc6ed4ecebd7b9f594ef82b09",
+  "columns": [
+   "product_id",
+   "review_count",
+   "avg_rating"
+  ],
+  "row_count": 26
+ },
+ "2-07": {
+  "hash": "f25b4abe7772f5e04dfcbc04f342cd9c23e2dda60e405cee515443560289ca94",
+  "columns": [
+   "user_id",
+   "order_count"
+  ],
+  "row_count": 33
+ },
+ "2-08": {
+  "hash": "4fe2cdd747a0a69e0a43c081c641df449092b5e323d329d7aaf7ebbb7827b798",
+  "columns": [
+   "month",
+   "order_count",
+   "cancelled_count"
+  ],
+  "row_count": 3
+ },
+ "2-09": {
+  "hash": "1f22ecad838e671a2e379ea2f081fefd90bc60af6b86c1ef119ea88d33ea2be3",
+  "columns": [
+   "cancel_rate"
+  ],
+  "row_count": 1
+ },
+ "2-10": {
+  "hash": "fca1ae563b65ee8dd5604332a9fdc238533126822b48dc55b29a06691c9bcbdc",
+  "columns": [
+   "prefecture",
+   "user_count",
+   "avg_birth_year"
+  ],
+  "row_count": 26
  }
 }
