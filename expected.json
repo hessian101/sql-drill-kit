@@ -639,5 +639,81 @@
    "dup_pairs"
   ],
   "row_count": 1
+ },
+ "9-01": {
+  "hash": "63858cd28a46a93db8a15c3297a2499885d40f9f8155d6f3b9a41eb7cb6b486c",
+  "columns": [
+   "product_count",
+   "product_id",
+   "name",
+   "category_id",
+   "price",
+   "is_active",
+   "launched_at"
+  ],
+  "row_count": 1
+ },
+ "9-02": {
+  "hash": "c5e132de1e897174ba1cfb8488928689cea82ffda12cfa3ab555130cc47559d7",
+  "columns": [
+   "followup_count",
+   "min_user_id",
+   "max_user_id",
+   "sum_user_id",
+   "reason_kinds",
+   "reason"
+  ],
+  "row_count": 1
+ },
+ "9-03": {
+  "hash": "bf73c3ee0a3a3a78cd6acb47bbfdf02c04b1b24fcde5b066c9ecec86b00f422f",
+  "columns": [
+   "names_with_spaces",
+   "product_id",
+   "name"
+  ],
+  "row_count": 3
+ },
+ "9-04": {
+  "hash": "b33da05323fa727d28c7b8418805f502b2f5bcb52e9393baa8823bbc5baaf0f7",
+  "columns": [
+   "product_id",
+   "price"
+  ],
+  "row_count": 9
+ },
+ "9-05": {
+  "hash": "29239efce1558a3c77efedda49403b17745a5eb157822a352f31ad50da8b9098",
+  "columns": [
+   "prefecture",
+   "user_count"
+  ],
+  "row_count": 21
+ },
+ "9-06": {
+  "hash": "9cfdc2a8a09c55ba53b4d4cba97f8fa80bbc271bb833b3cd3ffc1bbe69b5fd5d",
+  "columns": [
+   "review_count",
+   "rating_sum",
+   "review_id_sum"
+  ],
+  "row_count": 1
+ },
+ "9-07": {
+  "hash": "7930520c61fd3f859be07bd6df720062af59357143ed2076cdae0fca3a726b61",
+  "columns": [
+   "member_rank",
+   "user_count"
+  ],
+  "row_count": 4
+ },
+ "9-08": {
+  "hash": "62e1f2552a45b26f6db1d737b7b636182d0c9adb9793c50c33b691274d4170c6",
+  "columns": [
+   "status",
+   "order_count",
+   "order_12050"
+  ],
+  "row_count": 3
  }
 }

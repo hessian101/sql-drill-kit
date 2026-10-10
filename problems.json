@@ -72,5 +72,13 @@
  "8-03": {"ordered": true, "type": "dml", "check": "SELECT \"table\" AS ref_table, \"from\" AS from_column, \"to\" AS to_column FROM pragma_foreign_key_list('restock_requests')"},
  "8-04": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS products, SUM(stock_quantity) AS total_stock, (SELECT \"notnull\" FROM pragma_table_info('products') WHERE name = 'stock_quantity') AS not_null, (SELECT CAST(trim(dflt_value, '()') AS INTEGER) FROM pragma_table_info('products') WHERE name = 'stock_quantity') AS default_value FROM products"},
  "8-05": {"ordered": true, "type": "dml", "check": "SELECT (SELECT type FROM sqlite_master WHERE name = 'monthly_sales') AS object_type, month, sales FROM monthly_sales WHERE month >= '2026-07' ORDER BY month"},
- "8-06": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS kept_reviews, SUM(rating) AS rating_sum, (SELECT COUNT(*) FROM (SELECT user_id, product_id FROM reviews_unique GROUP BY user_id, product_id HAVING COUNT(*) > 1)) AS dup_pairs FROM reviews_unique"}
+ "8-06": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS kept_reviews, SUM(rating) AS rating_sum, (SELECT COUNT(*) FROM (SELECT user_id, product_id FROM reviews_unique GROUP BY user_id, product_id HAVING COUNT(*) > 1)) AS dup_pairs FROM reviews_unique"},
+ "9-01": {"ordered": true, "type": "dml", "check": "SELECT (SELECT COUNT(*) FROM products) AS product_count, product_id, name, category_id, price, is_active, launched_at FROM products WHERE product_id = 94"},
+ "9-02": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS followup_count, MIN(user_id) AS min_user_id, MAX(user_id) AS max_user_id, SUM(user_id) AS sum_user_id, COUNT(DISTINCT reason) AS reason_kinds, MAX(reason) AS reason FROM followups"},
+ "9-03": {"ordered": true, "type": "dml", "check": "SELECT (SELECT COUNT(*) FROM products WHERE name <> TRIM(name)) AS names_with_spaces, product_id, name FROM products WHERE product_id IN (25, 28, 34) ORDER BY product_id"},
+ "9-04": {"ordered": true, "type": "dml", "check": "SELECT product_id, price FROM products WHERE category_id IN (13, 14) ORDER BY product_id"},
+ "9-05": {"ordered": true, "type": "dml", "check": "SELECT prefecture, COUNT(*) AS user_count FROM users GROUP BY prefecture ORDER BY user_count DESC, prefecture"},
+ "9-06": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS review_count, SUM(rating) AS rating_sum, SUM(review_id) AS review_id_sum FROM reviews"},
+ "9-07": {"ordered": true, "type": "dml", "check": "SELECT member_rank, COUNT(*) AS user_count FROM users GROUP BY member_rank ORDER BY member_rank"},
+ "9-08": {"ordered": true, "type": "dml", "check": "SELECT status, COUNT(*) AS order_count, (SELECT status FROM orders WHERE order_id = 12050) AS order_12050 FROM orders GROUP BY status ORDER BY status"}
 }
