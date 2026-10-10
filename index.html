@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQLドリル 採点ページ</title>
+<meta name="description" content="SQLの練習問題を、ブラウザだけで解いて採点できるページです。インストールは要りません。">
+<style>
+:root {
+  --bg: #f7f5f1; --panel: #ffffff; --text: #1f2a37; --muted: #5d6673; --line: #dcd6cc;
+  --accent: #b5722a; --ok: #1f7a43; --ng: #b3261e; --code-bg: #f1ede6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161b22; --panel: #1f2630; --text: #e8e3da; --muted: #a8a196; --line: #343c48;
+    --accent: #e3b26b; --ok: #6fcf97; --ng: #f28b82; --code-bg: #121820;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161b22; --panel: #1f2630; --text: #e8e3da; --muted: #a8a196; --line: #343c48;
+  --accent: #e3b26b; --ok: #6fcf97; --ng: #f28b82; --code-bg: #121820;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.7 "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+main { max-width: 880px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+p { margin: 8px 0; }
+.muted { color: var(--muted); font-size: 14px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-top: 16px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+select, button, textarea { font: inherit; color: var(--text); }
+select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+textarea { width: 100%; min-height: 180px; margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--code-bg); font-family: Menlo, Consolas, monospace; font-size: 15px; line-height: 1.6; resize: vertical; }
+button { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+button.sub { background: transparent; color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+#status { margin-top: 12px; white-space: pre-wrap; font-family: Menlo, Consolas, monospace; font-size: 14px; }
+#status.ok { color: var(--ok); } #status.ng { color: var(--ng); }
+.table-wrap { overflow-x: auto; margin-top: 12px; }
+table { border-collapse: collapse; font-size: 14px; }
+th, td { border: 1px solid var(--line); padding: 4px 10px; text-align: left; white-space: nowrap; }
+th { background: var(--code-bg); }
+code { font-family: Menlo, Consolas, monospace; background: var(--code-bg); padding: 1px 4px; border-radius: 4px; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>SQLドリル 採点ページ</h1>
+  <p class="muted">書いたSQLを、ブラウザの中のSQLiteで実行して採点します。インストールは要りません。問題文は、Zennの記事・本に載っています。</p>
+
+  <div class="panel">
+    <div class="row">
+      <label for="problem">問題</label>
+      <select id="problem" disabled><option>読み込み中…</option></select>
+      <span id="progress" class="muted"></span>
+    </div>
+    <textarea id="sql" spellcheck="false" placeholder="ここにSQLを書きます" disabled></textarea>
+    <div class="row" style="margin-top:12px">
+      <button id="grade" disabled>採点する</button>
+      <button id="run" class="sub" disabled>結果を見る</button>
+    </div>
+    <div id="status" class="muted">データを読み込んでいます…</div>
+    <div class="table-wrap" id="result"></div>
+  </div>
+
+  <p class="muted" style="margin-top:24px">テーブルの一覧と列は、<a href="https://github.com/hessian101/sql-drill-kit#データについて架空のecサイトくりくり珈琲店">README</a>にまとめています。書いたSQLは、このブラウザの中にだけ保存されます。データはすべて架空のもので、個人情報は含みません。</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/sql-wasm.min.js"></script>
+<script>
+"use strict";
+const MIN_SQLITE = [3, 25, 0];
+let SQL, dbBytes, problems, expected;
+
+// ---- grade.py と同じ正規化・ハッシュ(結果を合わせるため、Python の json.dumps と同じ書式で文字列にする) ----
+function pyFloat(v) {
+  // Python の float の repr と同じ書き方にする(0.0001未満と1e16以上は指数表記)
+  if (v !== 0 && (Math.abs(v) < 1e-4 || Math.abs(v) >= 1e16)) {
+    let [m, e] = v.toExponential().split("e");
+    const sign = e[0] === "-" ? "-" : "+";
+    e = e.replace(/^[+-]/, "");
+    return m + "e" + sign + (e.length < 2 ? "0" + e : e);
+  }
+  return String(v);
+}
+function cell(v) {
+  if (typeof v === "number") {
+    if (Number.isInteger(v)) return v;
+    const r = Math.round(v * 1e6) / 1e6;   // Python の round(v, 6)
+    return Number.isInteger(r) ? r : r;     // 整数になった値は整数として書き出す
+  }
+  return v;
+}
+function pyStr(s) {
+  let out = '"';
+  for (const ch of s) {
+    const c = ch.codePointAt(0);
+    if (ch === '"') out += '\\"';
+    else if (ch === "\\") out += "\\\\";
+    else if (ch === "\n") out += "\\n";
+    else if (ch === "\r") out += "\\r";
+    else if (ch === "\t") out += "\\t";
+    else if (ch === "\b") out += "\\b";
+    else if (ch === "\f") out += "\\f";
+    else if (c < 0x20) out += "\\u" + c.toString(16).padStart(4, "0");
+    else out += ch;
+  }
+  return out + '"';
+}
+function pyDump(x) {
+  if (x === null || x === undefined) return "null";
+  if (typeof x === "number") return Number.isInteger(x) ? String(x) : pyFloat(x);
+  if (typeof x === "string") return pyStr(x);
+  if (Array.isArray(x)) return "[" + x.map(pyDump).join(", ") + "]";
+  return "{" + Object.keys(x).map(k => pyStr(k) + ": " + pyDump(x[k])).join(", ") + "}";
+}
+function cmpCodepoints(a, b) {
+  const A = Array.from(a), B = Array.from(b);
+  for (let i = 0; i < Math.min(A.length, B.length); i++) {
+    const d = A[i].codePointAt(0) - B[i].codePointAt(0);
+    if (d) return d;
+  }
+  return A.length - B.length;
+}
+function normalize(columns, rows, ordered) {
+  let rs = rows.map(r => r.map(cell));
+  if (!ordered) rs = rs.map(r => [pyDump(r), r]).sort((a, b) => cmpCodepoints(a[0], b[0])).map(p => p[1]);
+  return { columns: columns.map(c => c.toLowerCase()), rows: rs };
+}
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// ---- 実行 ----
+function stripComments(sql) {
+  return sql.split("\n").filter(l => !l.trim().startsWith("--")).join("\n").trim();
+}
+function execute(sql, problem) {
+  const db = new SQL.Database(dbBytes);   // 毎回まっさらなコピーで実行するので、元のデータは変わらない
+  try {
+    let stmt;
+    if (problem.type === "dml") {
+      db.exec(sql);
+      stmt = db.prepare(problem.check);
+    } else {
+      const it = db.iterateStatements(sql);
+      const first = it.next();
+      if (first.done) throw new Error("SQLが空です");
+      stmt = first.value;
+      const rest = it.getRemainingSQL ? it.getRemainingSQL().replace(/^[\s;]+/, "") : "";
+      if (stripComments(rest)) { stmt.free(); throw new Error("ONE_STATEMENT"); }
+    }
+    const columns = stmt.getColumnNames();
+    if (!columns.length) { stmt.free(); throw new Error("NOT_SELECT"); }
+    const rows = [];
+    while (stmt.step()) rows.push(stmt.get());
+    stmt.free();
+    return { columns, rows };
+  } finally {
+    db.close();
+  }
+}
+async function gradeSQL(pid, sql) {
+  const problem = problems[pid], exp = expected[pid];
+  if (!stripComments(sql)) return { ok: null, msg: `[--] ${pid}: まだ解答が書かれていません` };
+  let res;
+  try {
+    res = execute(sql, problem);
+  } catch (e) {
+    const m = String(e.message || e);
+    if (m === "ONE_STATEMENT") return { ok: false, msg: `[NG] ${pid}: SQL文は1つだけ書いてください(途中の ; を確認)` };
+    if (m === "NOT_SELECT") return { ok: false, msg: `[NG] ${pid}: SQLエラー: 結果を返すSELECT文になっていません` };
+    return { ok: false, msg: `[NG] ${pid}: SQLエラー: ${m}` };
+  }
+  const got = normalize(res.columns, res.rows, !!problem.ordered);
+  if (await sha256(pyDump(got)) === exp.hash) return { ok: true, msg: `[OK] ${pid}`, res };
+  let msg;
+  if (pyDump(got.columns) !== pyDump(exp.columns)) msg = `[NG] ${pid}: 列が違います\n     期待: ${exp.columns.join(", ")}\n     実際: ${got.columns.join(", ")}`;
+  else if (got.rows.length !== exp.row_count) msg = `[NG] ${pid}: 行数が違います(期待 ${exp.row_count} 行 / 実際 ${got.rows.length} 行)`;
+  else if (problem.ordered) msg = `[NG] ${pid}: 列と行数は合っています。値か並び順(ORDER BY)が違います`;
+  else msg = `[NG] ${pid}: 列と行数は合っています。値が違います`;
+  return { ok: false, msg, res };
+}
+window.gradeSQL = gradeSQL;   // 動作確認用
+
+// ---- 画面 ----
+const $ = id => document.getElementById(id);
+function store(k, v) { try { v === undefined ? localStorage.getItem(k) : localStorage.setItem(k, v); } catch (_) {} }
+function load(k) { try { return localStorage.getItem(k) || ""; } catch (_) { return ""; } }
+function showTable(res) {
+  const wrap = $("result");
+  wrap.textContent = "";
+  if (!res) return;
+  const t = document.createElement("table");
+  const head = t.insertRow();
+  res.columns.forEach(c => { const th = document.createElement("th"); th.textContent = c; head.appendChild(th); });
+  res.rows.slice(0, 20).forEach(r => { const tr = t.insertRow(); r.forEach(v => { tr.insertCell().textContent = v === null ? "NULL" : String(v); }); });
+  wrap.appendChild(t);
+  if (res.rows.length > 20) { const p = document.createElement("p"); p.className = "muted"; p.textContent = `先頭20行を表示しています(全${res.rows.length}行)`; wrap.appendChild(p); }
+}
+function setStatus(text, cls) { const s = $("status"); s.textContent = text; s.className = cls || ""; }
+function updateProgress() {
+  const ids = Object.keys(problems).filter(p => p in expected);
+  const done = ids.filter(p => load("ok:" + p) === "1").length;
+  $("progress").textContent = `正解 ${done} / ${ids.length} 問`;
+}
+
+async function init() {
+  const v = (await (async () => { const d = new SQL.Database(); const r = d.exec("select sqlite_version()")[0].values[0][0]; d.close(); return r; })());
+  const parts = v.split(".").map(Number);
+  if (parts[0] < MIN_SQLITE[0] || (parts[0] === MIN_SQLITE[0] && parts[1] < MIN_SQLITE[1])) setStatus(`SQLite ${v} は古いため、正しく採点できない問題があります`, "ng");
+  const [db, p, e] = await Promise.all([
+    fetch("shop.db").then(r => r.arrayBuffer()),
+    fetch("problems.json").then(r => r.json()),
+    fetch("expected.json").then(r => r.json()),
+  ]);
+  dbBytes = new Uint8Array(db); problems = p; expected = e;
+  const dbHash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", dbBytes))).map(b => b.toString(16).padStart(2, "0")).join("");
+  const sel = $("problem");
+  sel.textContent = "";
+  let lastCh = null, group;
+  Object.keys(problems).filter(k => k in expected).forEach(pid => {
+    const ch = pid.split("-")[0];
+    if (ch !== lastCh) { group = document.createElement("optgroup"); group.label = `第${ch}章`; sel.appendChild(group); lastCh = ch; }
+    const o = document.createElement("option"); o.value = pid; o.textContent = pid; group.appendChild(o);
+  });
+  const fromUrl = new URLSearchParams(location.search).get("q");
+  if (fromUrl && fromUrl in expected) sel.value = fromUrl;
+  ["problem", "sql", "grade", "run"].forEach(id => $(id).disabled = false);
+  const showProblem = () => { $("sql").value = load("sql:" + sel.value); setStatus(`問題 ${sel.value} を選びました`, "muted"); showTable(null); };
+  sel.addEventListener("change", showProblem);
+  $("sql").addEventListener("input", () => store("sql:" + sel.value, $("sql").value));
+  $("grade").addEventListener("click", async () => {
+    const r = await gradeSQL(sel.value, $("sql").value);
+    setStatus(r.msg, r.ok ? "ok" : r.ok === false ? "ng" : "muted");
+    if (r.ok) store("ok:" + sel.value, "1");
+    showTable(r.res); updateProgress();
+  });
+  $("run").addEventListener("click", () => {
+    try { const res = execute($("sql").value, problems[sel.value]); setStatus(`実行しました(${res.rows.length} 行)`, "muted"); showTable(res); }
+    catch (e) { const m = String(e.message || e); setStatus(m === "ONE_STATEMENT" ? "SQL文は1つだけ書いてください" : m === "NOT_SELECT" ? "結果を返すSELECT文になっていません" : "SQLエラー: " + m, "ng"); showTable(null); }
+  });
+  showProblem(); updateProgress();
+  if (dbHash !== expected._meta.db_sha256) setStatus("注意: データが配布時と異なります。採点結果が正しくならない可能性があります", "ng");
+  else setStatus(`準備ができました(SQLite ${v})。問題を選んで、SQLを書いてください`, "muted");
+}
+initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/${f}` })
+  .then(s => { SQL = s; return init(); })
+  .catch(e => setStatus("読み込みに失敗しました: " + e, "ng"));
+</script>
+</body>
+</html>
