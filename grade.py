@@ -12,6 +12,7 @@ answers/<問題番号>.sql に解答のSQLを書いてから実行してくだ�
 import argparse
 import hashlib
 import json
+import re
 import sqlite3
 import sys
 from pathlib import Path
@@ -45,24 +46,52 @@ def file_sha256(path):
 
 
 def execute(sql, problem):
-    """解答SQLを実行して (列名, 行) を返す。元の shop.db は変更しない"""
-    if problem.get("type") == "dml":
-        # 更新系の問題:DBをメモリ上に複製してから実行し、検証用のクエリで結果を確かめる
+    """解答SQLを実行して (列名, 行, 実行計画) を返す。元の shop.db は変更しない"""
+    if problem.get("type") == "dml" or "setup" in problem:
+        # DBをメモリ上に複製してから実行する。更新系の問題は、検証用のクエリで結果を確かめる
         src = sqlite3.connect(str(DB_PATH))
         con = sqlite3.connect(":memory:")
         src.backup(con)
         src.close()
-        con.executescript(sql)
-        cur = con.execute(problem["check"])
+        if "setup" in problem:
+            con.executescript(problem["setup"])
     else:
         con = sqlite3.connect(DB_PATH.as_uri() + "?mode=ro", uri=True)
-        cur = con.execute(sql)
+    if problem.get("type") == "dml":
+        con.executescript(sql)
+        target = problem["check"]
+    else:
+        target = sql
+    cur = con.execute(target)
     if cur.description is None:
         raise sqlite3.Error("結果を返すSELECT文になっていません")
     columns = [d[0] for d in cur.description]
     rows = cur.fetchall()
+    plan = None
+    if "plan" in problem:
+        plan = [r[3] for r in con.execute("EXPLAIN QUERY PLAN " + target)]
+        tables = dict(con.execute("SELECT name, tbl_name FROM sqlite_master WHERE type = 'index'"))
+        plan = (plan, tables)
     con.close()
-    return columns, rows
+    return columns, rows, plan
+
+
+def check_plan(rule, plan):
+    """実行計画で、指定のテーブルをインデックスで絞り込んでいるか(SEARCH ... USING INDEX)を確かめる
+
+    実行計画の書式は SQLite のバージョンで少し違う(古い版は SEARCH TABLE orders AS o ...)ので、両方を受け付ける
+    """
+    lines, tables = plan
+    used = []
+    for line in lines:
+        m = re.match(r"SEARCH (?:TABLE )?\S+(?: AS \S+)? USING (COVERING )?INDEX (\S+)", line)
+        if m and tables.get(m.group(2)) == rule["table"]:
+            used.append(bool(m.group(1)))
+    if not used:
+        return f"結果は合っていますが、{rule['table']} をインデックスで絞り込めていません(SEARCH ... USING INDEX になっていません)"
+    if rule.get("covering") and not any(used):
+        return "結果は合っていますが、カバリングインデックスになっていません(USING COVERING INDEX になっていません)"
+    return None
 
 
 def grade_one(pid, problem, expected, show):
@@ -74,7 +103,7 @@ def grade_one(pid, problem, expected, show):
     if not body:
         return None, f"[--] {pid}: まだ解答が書かれていません"
     try:
-        columns, rows = execute(sql, problem)
+        columns, rows, plan = execute(sql, problem)
     except (sqlite3.Warning, sqlite3.Error) as e:
         if "one statement" in str(e):
             return False, f"[NG] {pid}: SQL文は1つだけ書いてください(途中の ; を確認)"
@@ -90,9 +119,16 @@ def grade_one(pid, problem, expected, show):
         if len(rows) > 10:
             lines.append(f"     ...(全{len(rows)}行)")
 
+    if plan is not None:
+        lines.append("     実行計画:")
+        lines.extend("       " + line for line in plan[0])
+
     got = normalize(columns, rows, problem.get("ordered", False))
     exp = expected[pid]
     if digest(got) == exp["hash"]:
+        plan_msg = check_plan(problem["plan"], plan) if plan is not None else None
+        if plan_msg:
+            return False, "\n".join([f"[NG] {pid}: {plan_msg}"] + lines)
         return True, "\n".join([f"[OK] {pid}"] + lines)
     if got["columns"] != exp["columns"]:
         msg = f"[NG] {pid}: 列が違います\n     期待: {exp['columns']}\n     実際: {got['columns']}"

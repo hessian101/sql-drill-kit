@@ -141,6 +141,7 @@ function stripComments(sql) {
 function execute(sql, problem) {
   const db = new SQL.Database(dbBytes);   // 毎回まっさらなコピーで実行するので、元のデータは変わらない
   try {
+    if (problem.setup) db.exec(problem.setup);
     let stmt;
     if (problem.type === "dml") {
       db.exec(sql);
@@ -154,14 +155,37 @@ function execute(sql, problem) {
       if (stripComments(rest)) { stmt.free(); throw new Error("ONE_STATEMENT"); }
     }
     const columns = stmt.getColumnNames();
+    const target = stmt.getSQL();
     if (!columns.length) { stmt.free(); throw new Error("NOT_SELECT"); }
     const rows = [];
     while (stmt.step()) rows.push(stmt.get());
     stmt.free();
-    return { columns, rows };
+    let plan = null;
+    if (problem.plan) {
+      // 実行計画(EXPLAIN QUERY PLAN)と、インデックスがどのテーブルのものかを取っておく
+      const lines = (db.exec("EXPLAIN QUERY PLAN " + target)[0] || { values: [] }).values.map(r => r[3]);
+      const tables = {};
+      (db.exec("SELECT name, tbl_name FROM sqlite_master WHERE type = 'index'")[0] || { values: [] }).values.forEach(r => { tables[r[0]] = r[1]; });
+      plan = { lines, tables };
+    }
+    return { columns, rows, plan };
   } finally {
     db.close();
   }
+}
+function checkPlan(rule, plan) {
+  // grade.py の check_plan と同じ判定:指定のテーブルを SEARCH ... USING INDEX で絞り込んでいるか
+  const used = [];
+  plan.lines.forEach(line => {
+    const m = line.match(/^SEARCH (?:TABLE )?\S+(?: AS \S+)? USING (COVERING )?INDEX (\S+)/);
+    if (m && plan.tables[m[2]] === rule.table) used.push(!!m[1]);
+  });
+  if (!used.length) return `結果は合っていますが、${rule.table} をインデックスで絞り込めていません(SEARCH ... USING INDEX になっていません)`;
+  if (rule.covering && !used.some(Boolean)) return "結果は合っていますが、カバリングインデックスになっていません(USING COVERING INDEX になっていません)";
+  return null;
+}
+function planText(res) {
+  return res && res.plan ? "\n     実行計画:\n" + res.plan.lines.map(l => "       " + l).join("\n") : "";
 }
 async function gradeSQL(pid, sql) {
   const problem = problems[pid], exp = expected[pid];
@@ -176,13 +200,17 @@ async function gradeSQL(pid, sql) {
     return { ok: false, msg: `[NG] ${pid}: SQLエラー: ${m}` };
   }
   const got = normalize(res.columns, res.rows, !!problem.ordered);
-  if (await sha256(pyDump(got)) === exp.hash) return { ok: true, msg: `[OK] ${pid}`, res };
+  if (await sha256(pyDump(got)) === exp.hash) {
+    const planMsg = problem.plan ? checkPlan(problem.plan, res.plan) : null;
+    if (planMsg) return { ok: false, msg: `[NG] ${pid}: ${planMsg}` + planText(res), res };
+    return { ok: true, msg: `[OK] ${pid}` + planText(res), res };
+  }
   let msg;
   if (pyDump(got.columns) !== pyDump(exp.columns)) msg = `[NG] ${pid}: 列が違います\n     期待: ${exp.columns.join(", ")}\n     実際: ${got.columns.join(", ")}`;
   else if (got.rows.length !== exp.row_count) msg = `[NG] ${pid}: 行数が違います(期待 ${exp.row_count} 行 / 実際 ${got.rows.length} 行)`;
   else if (problem.ordered) msg = `[NG] ${pid}: 列と行数は合っています。値か並び順(ORDER BY)が違います`;
   else msg = `[NG] ${pid}: 列と行数は合っています。値が違います`;
-  return { ok: false, msg, res };
+  return { ok: false, msg: msg + planText(res), res };
 }
 window.gradeSQL = gradeSQL;   // 動作確認用
 
@@ -240,7 +268,7 @@ async function init() {
     showTable(r.res); updateProgress();
   });
   $("run").addEventListener("click", () => {
-    try { const res = execute($("sql").value, problems[sel.value]); setStatus(`実行しました(${res.rows.length} 行)`, "muted"); showTable(res); }
+    try { const res = execute($("sql").value, problems[sel.value]); setStatus(`実行しました(${res.rows.length} 行)` + planText(res), "muted"); showTable(res); }
     catch (e) { const m = String(e.message || e); setStatus(m === "ONE_STATEMENT" ? "SQL文は1つだけ書いてください" : m === "NOT_SELECT" ? "結果を返すSELECT文になっていません" : "SQLエラー: " + m, "ng"); showTable(null); }
   });
   showProblem(); updateProgress();

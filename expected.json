@@ -715,5 +715,39 @@
    "order_12050"
   ],
   "row_count": 3
+ },
+ "10-01": {
+  "hash": "664b17318c9f1dbe851920f49309525d440ad7abba5c56bf1233a9f3cc284001",
+  "columns": [
+   "order_id",
+   "ordered_at",
+   "status"
+  ],
+  "row_count": 6
+ },
+ "10-02": {
+  "hash": "4326a3ba7feea2d2c9bd98fd0aab869a5acc7637f3590fdbadea47f0dc97a78f",
+  "columns": [
+   "index_name",
+   "seqno",
+   "column_name"
+  ],
+  "row_count": 2
+ },
+ "10-03": {
+  "hash": "1a2a06211fc30df6f91527fc4e922f7127f3f2dcec9da21b561eb4fbd7f0761c",
+  "columns": [
+   "status",
+   "order_count"
+  ],
+  "row_count": 3
+ },
+ "10-04": {
+  "hash": "3b2c75abe75b1c7537bfca7803afbc3a439a8362fac18c3d51d5a078cb28ab3a",
+  "columns": [
+   "event_type",
+   "event_count"
+  ],
+  "row_count": 3
  }
 }

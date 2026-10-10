@@ -80,5 +80,9 @@
  "9-05": {"ordered": true, "type": "dml", "check": "SELECT prefecture, COUNT(*) AS user_count FROM users GROUP BY prefecture ORDER BY user_count DESC, prefecture"},
  "9-06": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS review_count, SUM(rating) AS rating_sum, SUM(review_id) AS review_id_sum FROM reviews"},
  "9-07": {"ordered": true, "type": "dml", "check": "SELECT member_rank, COUNT(*) AS user_count FROM users GROUP BY member_rank ORDER BY member_rank"},
- "9-08": {"ordered": true, "type": "dml", "check": "SELECT status, COUNT(*) AS order_count, (SELECT status FROM orders WHERE order_id = 12050) AS order_12050 FROM orders GROUP BY status ORDER BY status"}
+ "9-08": {"ordered": true, "type": "dml", "check": "SELECT status, COUNT(*) AS order_count, (SELECT status FROM orders WHERE order_id = 12050) AS order_12050 FROM orders GROUP BY status ORDER BY status"},
+ "10-01": {"ordered": true, "type": "dml", "check": "SELECT order_id, ordered_at, status FROM orders WHERE user_id = 125 ORDER BY ordered_at", "plan": {"table": "orders"}},
+ "10-02": {"ordered": true, "type": "dml", "check": "SELECT il.name AS index_name, ii.seqno, ii.name AS column_name FROM pragma_index_list('orders') il JOIN pragma_index_info(il.name) ii WHERE il.origin = 'c' ORDER BY il.name, ii.seqno"},
+ "10-03": {"ordered": true, "setup": "CREATE INDEX idx_orders_ordered_at ON orders (ordered_at);", "plan": {"table": "orders"}},
+ "10-04": {"ordered": true, "type": "dml", "check": "SELECT event_type, COUNT(*) AS event_count FROM events WHERE user_id = 125 GROUP BY event_type ORDER BY event_type", "plan": {"table": "events", "covering": true}}
 }
