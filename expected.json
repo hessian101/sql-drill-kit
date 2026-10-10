@@ -537,5 +537,52 @@
    "total_quantity"
   ],
   "row_count": 10
+ },
+ "7-01": {
+  "hash": "e1a6fef84f11a5223247ab67755248615ab84461b358b4552df8268d3b019412",
+  "columns": [
+   "active_users"
+  ],
+  "row_count": 1
+ },
+ "7-02": {
+  "hash": "3ed74086e860150ecc6850114c4cd4ec24ade83d334893f893b41630e5972ea8",
+  "columns": [
+   "both_years_users"
+  ],
+  "row_count": 1
+ },
+ "7-03": {
+  "hash": "d6ff37ca6b0ad537ccbde26d555c8687fe4a52602edb40ba09926dac6b2adadf",
+  "columns": [
+   "lapsed_users"
+  ],
+  "row_count": 1
+ },
+ "7-04": {
+  "hash": "6d27c5dbe34cf146cbacd239df825d7a4a4bca9f64af0bfccbf925c68ca4fa2d",
+  "columns": [
+   "happened_at",
+   "event_type",
+   "ref_id"
+  ],
+  "row_count": 4
+ },
+ "7-05": {
+  "hash": "f0015762376ff8b7890de4a70c3544f4a8f5c396f21b6548f1f3c765f02fccad",
+  "columns": [
+   "day",
+   "decaf_sales"
+  ],
+  "row_count": 30
+ },
+ "7-06": {
+  "hash": "e98602a8eed24cc6ad36c6ba1f4129a662d947eb8b81514d982b063472efcc60",
+  "columns": [
+   "category_id",
+   "path",
+   "depth"
+  ],
+  "row_count": 15
  }
 }
