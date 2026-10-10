@@ -274,5 +274,87 @@
    "same_day_buyers"
   ],
   "row_count": 1
+ },
+ "4-01": {
+  "hash": "0db8944ddd936f8c288e4df9de792a54ff3e41a5414dac9f0f9cf0ee60535575",
+  "columns": [
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 33
+ },
+ "4-02": {
+  "hash": "5a00cb6364901b379e056d7e418e0fdfeed9a8422e37ff0ec10be034c2918813",
+  "columns": [
+   "user_id"
+  ],
+  "row_count": 153
+ },
+ "4-03": {
+  "hash": "d3a6bf9649afab488214136bf4623cb5a6baf1ef03f79949fc541dff64e0ef0e",
+  "columns": [
+   "coupon_id",
+   "code"
+  ],
+  "row_count": 7
+ },
+ "4-04": {
+  "hash": "0460c36e9b980ada2d6f9ddda82fd866a93758ed5f6e5e806f7d645e9efa92dd",
+  "columns": [
+   "buyer_reviewer_count"
+  ],
+  "row_count": 1
+ },
+ "4-05": {
+  "hash": "a3a88242917abca5e6c038c664cceea32b500ec1eb003864ff690e30a027d2c1",
+  "columns": [
+   "category_id",
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 11
+ },
+ "4-06": {
+  "hash": "9c12626387303b9b3c90f2ab4ef21430bba7ffd457b351b93c9cc0bef3f16a9f",
+  "columns": [
+   "order_count",
+   "user_count"
+  ],
+  "row_count": 5
+ },
+ "4-07": {
+  "hash": "4dd1ece1168181f29aac4c335c9c12496e118e8221ab2823b9112ccbb4a72654",
+  "columns": [
+   "month",
+   "sales"
+  ],
+  "row_count": 5
+ },
+ "4-08": {
+  "hash": "1b0a44bcd98afd5200d332649f702c1eb7f875c6d83dd7ccb55d87baae48a130",
+  "columns": [
+   "first_time_buyers"
+  ],
+  "row_count": 1
+ },
+ "4-09": {
+  "hash": "1ae9824c9b5271c48b078d79525c58dd791cfd9d9254d16333e1146e85578de7",
+  "columns": [
+   "user_id",
+   "prefecture",
+   "total_spend"
+  ],
+  "row_count": 10
+ },
+ "4-10": {
+  "hash": "7f76d1f479ea60e809e04a51fc41e6c890f91516d906a93461285ed06f381339",
+  "columns": [
+   "parent_name",
+   "sales",
+   "share"
+  ],
+  "row_count": 4
  }
 }
