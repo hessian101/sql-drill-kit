@@ -847,5 +847,49 @@
    "user_count"
   ],
   "row_count": 9
+ },
+ "12-01": {
+  "hash": "f8c70569c2d052143b7bc43738df6a68232b989ecf27771452d28c0bcc116b3b",
+  "columns": [
+   "category_name",
+   "sep_sales",
+   "sep_orders",
+   "aug_sales",
+   "mom_rate"
+  ],
+  "row_count": 4
+ },
+ "12-02": {
+  "hash": "be84d7b8a912c29dec75a3334b96a9ec67e53160334ad8b9196bf03f75111a19",
+  "columns": [
+   "coupon_used",
+   "order_count",
+   "cancel_rate",
+   "avg_amount",
+   "avg_paid"
+  ],
+  "row_count": 2
+ },
+ "12-03": {
+  "hash": "839e8340ae1bc7b4ddf45caf427090df79c7a050970e8bcc1422a9d4b8efd06e",
+  "columns": [
+   "user_id",
+   "nickname",
+   "order_count",
+   "total_amount",
+   "last_order_date"
+  ],
+  "row_count": 10
+ },
+ "12-04": {
+  "hash": "9416ed7b8c32d1b2c960d0aacd04de1268e7f74ae8cf465a3f1703a822d581db",
+  "columns": [
+   "product_id",
+   "name",
+   "review_count",
+   "avg_rating",
+   "quantity_2026"
+  ],
+  "row_count": 5
  }
 }
