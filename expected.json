@@ -422,5 +422,120 @@
    "user_count"
   ],
   "row_count": 3
+ },
+ "6-01": {
+  "hash": "748138fefcc9cd56c6afcaae494063343d0ea2ce03e28f852fa9eb57139e2adc",
+  "columns": [
+   "rn",
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 5
+ },
+ "6-02": {
+  "hash": "387a7e649ba71403d60b6db9ea331087140c0127c64acca0ec18b633a3287c0e",
+  "columns": [
+   "product_id",
+   "review_count",
+   "rnk",
+   "dense_rnk"
+  ],
+  "row_count": 11
+ },
+ "6-03": {
+  "hash": "7145406e42857cb8ae3b8c004a946ae3e577b63bcdc4f363c3e4bc6a7a76e737",
+  "columns": [
+   "category_id",
+   "product_id",
+   "price",
+   "rank_in_category"
+  ],
+  "row_count": 86
+ },
+ "6-04": {
+  "hash": "28dd15897e43885f6b89f6173b0a880a689e523bba012866467b851cb871ebc2",
+  "columns": [
+   "category_id",
+   "product_id",
+   "name",
+   "price"
+  ],
+  "row_count": 22
+ },
+ "6-05": {
+  "hash": "16030df5566ba3b3c8e14d3cf4004dc754b175ec12ed790f070b07e52385c50c",
+  "columns": [
+   "month",
+   "sales",
+   "cumulative_sales"
+  ],
+  "row_count": 9
+ },
+ "6-06": {
+  "hash": "c5f9004423c1cc29b0d343066a470aa2e0600a8590fb7089bf84887b11b89aa8",
+  "columns": [
+   "month",
+   "sales",
+   "moving_avg_3m"
+  ],
+  "row_count": 9
+ },
+ "6-07": {
+  "hash": "1d77db758a868f438e0eb3f3d0d94e7dcab87b1ff25e960b6b57dfa971c89a43",
+  "columns": [
+   "month",
+   "sales",
+   "prev_sales",
+   "growth_pct"
+  ],
+  "row_count": 9
+ },
+ "6-08": {
+  "hash": "cd1a04fc5262f078b3d5f81ee17314ea8c93a90ba1a4ce4f60343c5770bcbce5",
+  "columns": [
+   "month",
+   "sales",
+   "share"
+  ],
+  "row_count": 9
+ },
+ "6-09": {
+  "hash": "ff0aabfa78923e44eee477455d16a08b608c5143b2c1a80f5a28f437270352af",
+  "columns": [
+   "repeat_users",
+   "avg_days_to_second"
+  ],
+  "row_count": 1
+ },
+ "6-10": {
+  "hash": "31715fb9eebcabe0e14225ae317d49082059684a9401e531a8b07378ee47e65d",
+  "columns": [
+   "quartile",
+   "user_count",
+   "avg_spend",
+   "min_spend"
+  ],
+  "row_count": 4
+ },
+ "6-11": {
+  "hash": "cb868b0eeea793dac69f1b9eeda408408a03434778a997ccaeeb109ed167243c",
+  "columns": [
+   "product_id",
+   "changed_on",
+   "old_price",
+   "new_price"
+  ],
+  "row_count": 21
+ },
+ "6-12": {
+  "hash": "23c666350166e175fcf252e9d9092d55642529ed3ba71da93cc9e115bacdcf06",
+  "columns": [
+   "month",
+   "rnk",
+   "product_id",
+   "total_quantity"
+  ],
+  "row_count": 10
  }
 }
