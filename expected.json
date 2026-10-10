@@ -356,5 +356,71 @@
    "share"
   ],
   "row_count": 4
+ },
+ "5-01": {
+  "hash": "d0b8e613dd1ce84f10c222a8692de0a0553c6eef9c8387f8a133816bc788b2fb",
+  "columns": [
+   "prefecture",
+   "user_count"
+  ],
+  "row_count": 3
+ },
+ "5-02": {
+  "hash": "ec586781a177bd9981e524e167966c12f8e568678fd5256881dd6ce7ed3ea2ae",
+  "columns": [
+   "product_id",
+   "name_with_brackets",
+   "extra_spaces"
+  ],
+  "row_count": 3
+ },
+ "5-03": {
+  "hash": "17089e67c3e6e84e50392eee49c79f7e216cda0d124d2c2e3aa34852729e8cbf",
+  "columns": [
+   "weekday_no",
+   "weekday",
+   "order_count"
+  ],
+  "row_count": 7
+ },
+ "5-04": {
+  "hash": "9bf6cfa98dc701992025443c155c952e969d2bdd82cfd15280d7ab0bf81008f1",
+  "columns": [
+   "time_slot",
+   "order_count"
+  ],
+  "row_count": 4
+ },
+ "5-05": {
+  "hash": "f0781cecb20720ce10489e32a2a17a380417bee78e4ff4d2bcae6f89df32e2db",
+  "columns": [
+   "age_group",
+   "user_count"
+  ],
+  "row_count": 6
+ },
+ "5-06": {
+  "hash": "19f56b5aa33b0462823e761b117509a8eab290962f033b9fa5b69e09a4283a8c",
+  "columns": [
+   "user_count",
+   "avg_days"
+  ],
+  "row_count": 1
+ },
+ "5-07": {
+  "hash": "ffe0ce9d4980649cd032a8f882f02c6c8ad832792476c6b26a494028b061e7a5",
+  "columns": [
+   "order_code",
+   "order_date"
+  ],
+  "row_count": 33
+ },
+ "5-08": {
+  "hash": "8dcbab49573ef301009bf1a507a1069026e478edd373021855137fd6310defef",
+  "columns": [
+   "member_rank",
+   "user_count"
+  ],
+  "row_count": 3
  }
 }
