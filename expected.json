@@ -749,5 +749,103 @@
    "event_count"
   ],
   "row_count": 3
+ },
+ "11-01": {
+  "hash": "e49d41451102d6f85f79cf66078a56a1b746db2314b7533198679e525e852d98",
+  "columns": [
+   "buyers",
+   "repeaters",
+   "repeat_rate"
+  ],
+  "row_count": 1
+ },
+ "11-02": {
+  "hash": "3f4abcd581e05d7ebe2d57ef3fbb24125a27b2d2e346c92213f06fd97eb43389",
+  "columns": [
+   "month",
+   "new_buyers",
+   "repeat_buyers"
+  ],
+  "row_count": 9
+ },
+ "11-03": {
+  "hash": "6d45f9c3f8bc166afc0e003f70ee2b0ba73d3b6ebd6f24a3338a8f2fec4180af",
+  "columns": [
+   "first_month",
+   "buyers",
+   "f2_users",
+   "f2_rate"
+  ],
+  "row_count": 6
+ },
+ "11-04": {
+  "hash": "8e0085188ceb1dac003f9c3832d043545b08cd663a731f904efe2e940b3ffe11",
+  "columns": [
+   "cohort_month",
+   "month_offset",
+   "active_users"
+  ],
+  "row_count": 24
+ },
+ "11-05": {
+  "hash": "0054909545979fb2c6c299dfd66e580c3d0a89bc2309a7fd3aa06a425d9bab02",
+  "columns": [
+   "cohort_month",
+   "cohort_size",
+   "m0_rate",
+   "m1_rate",
+   "m2_rate",
+   "m3_rate"
+  ],
+  "row_count": 6
+ },
+ "11-06": {
+  "hash": "477c046a2acf5e77c7680a80e0fcc6d713e75c5da26f5a0712086c578059440f",
+  "columns": [
+   "viewers",
+   "carters",
+   "purchasers",
+   "cart_rate",
+   "purchase_rate"
+  ],
+  "row_count": 1
+ },
+ "11-07": {
+  "hash": "5f14b01b3a08ac3fbe8233ea758585c56c04ba1062a26d5611727aa64e6b6f12",
+  "columns": [
+   "product_id_1",
+   "name_1",
+   "product_id_2",
+   "name_2",
+   "together_count"
+  ],
+  "row_count": 3
+ },
+ "11-08": {
+  "hash": "db94f9d20187ab2e37118484449aac749a6d65bfacb55c28796a691c38351d3d",
+  "columns": [
+   "month",
+   "order_count",
+   "median_amount"
+  ],
+  "row_count": 3
+ },
+ "11-09": {
+  "hash": "fa23171ee53ccdf56a8707e6c206a5cd0a2c81be63fecdf9506740ed41f33b4d",
+  "columns": [
+   "abc_rank",
+   "product_count",
+   "sales"
+  ],
+  "row_count": 3
+ },
+ "11-10": {
+  "hash": "84de70b0ea6619c1d7ad93d1a5b68e2b734c0d1bf661264d28b6235e355b2981",
+  "columns": [
+   "r_score",
+   "f_score",
+   "user_count"
+  ],
+  "row_count": 9
  }
 }

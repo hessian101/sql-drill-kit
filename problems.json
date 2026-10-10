@@ -84,5 +84,15 @@
  "10-01": {"ordered": true, "type": "dml", "check": "SELECT order_id, ordered_at, status FROM orders WHERE user_id = 125 ORDER BY ordered_at", "plan": {"table": "orders"}},
  "10-02": {"ordered": true, "type": "dml", "check": "SELECT il.name AS index_name, ii.seqno, ii.name AS column_name FROM pragma_index_list('orders') il JOIN pragma_index_info(il.name) ii WHERE il.origin = 'c' ORDER BY il.name, ii.seqno"},
  "10-03": {"ordered": true, "setup": "CREATE INDEX idx_orders_ordered_at ON orders (ordered_at);", "plan": {"table": "orders"}},
- "10-04": {"ordered": true, "type": "dml", "check": "SELECT event_type, COUNT(*) AS event_count FROM events WHERE user_id = 125 GROUP BY event_type ORDER BY event_type", "plan": {"table": "events", "covering": true}}
+ "10-04": {"ordered": true, "type": "dml", "check": "SELECT event_type, COUNT(*) AS event_count FROM events WHERE user_id = 125 GROUP BY event_type ORDER BY event_type", "plan": {"table": "events", "covering": true}},
+ "11-01": {"ordered": true},
+ "11-02": {"ordered": true},
+ "11-03": {"ordered": true},
+ "11-04": {"ordered": true},
+ "11-05": {"ordered": true},
+ "11-06": {"ordered": true},
+ "11-07": {"ordered": true},
+ "11-08": {"ordered": true},
+ "11-09": {"ordered": true},
+ "11-10": {"ordered": true}
 }
