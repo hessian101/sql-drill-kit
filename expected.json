@@ -584,5 +584,60 @@
    "depth"
   ],
   "row_count": 15
+ },
+ "8-01": {
+  "hash": "ad49834b29204b4dff9034fa257d02dab90395ce9baba6bed9ab6068b5364794",
+  "columns": [
+   "name",
+   "type",
+   "not_null",
+   "pk"
+  ],
+  "row_count": 4
+ },
+ "8-02": {
+  "hash": "5721c7b16e0be185fe8b04c46c85220889b6a82d86b9a200bdedaae949719934",
+  "columns": [
+   "product_id",
+   "quantity"
+  ],
+  "row_count": 2
+ },
+ "8-03": {
+  "hash": "a947e6076d0a4aa43fae7a05658c89bba5abe85bf488d0b2abb4603df79fa85f",
+  "columns": [
+   "ref_table",
+   "from_column",
+   "to_column"
+  ],
+  "row_count": 1
+ },
+ "8-04": {
+  "hash": "e6fe959fa95040fbcf8bdedb9315f708d6dc69e31760ff4b07b8c16ce0086d71",
+  "columns": [
+   "products",
+   "total_stock",
+   "not_null",
+   "default_value"
+  ],
+  "row_count": 1
+ },
+ "8-05": {
+  "hash": "4cba34524c9f2cf2cf379b19774d79e8e94beff8e427dac7cddd47cf3973012b",
+  "columns": [
+   "object_type",
+   "month",
+   "sales"
+  ],
+  "row_count": 3
+ },
+ "8-06": {
+  "hash": "e0d72b3cf54878815b36609c905b353f3489dca85f516b943744cae28504babe",
+  "columns": [
+   "kept_reviews",
+   "rating_sum",
+   "dup_pairs"
+  ],
+  "row_count": 1
  }
 }

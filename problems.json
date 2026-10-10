@@ -66,5 +66,11 @@
  "7-03": {"ordered": true},
  "7-04": {"ordered": true},
  "7-05": {"ordered": true},
- "7-06": {"ordered": true}
+ "7-06": {"ordered": true},
+ "8-01": {"ordered": true, "type": "dml", "check": "SELECT name, upper(type) AS type, CASE WHEN pk = 1 THEN NULL ELSE \"notnull\" END AS not_null, pk FROM pragma_table_info('wishlists') ORDER BY cid"},
+ "8-02": {"ordered": true, "type": "dml", "check": "SELECT product_id, quantity FROM stock ORDER BY product_id"},
+ "8-03": {"ordered": true, "type": "dml", "check": "SELECT \"table\" AS ref_table, \"from\" AS from_column, \"to\" AS to_column FROM pragma_foreign_key_list('restock_requests')"},
+ "8-04": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS products, SUM(stock_quantity) AS total_stock, (SELECT \"notnull\" FROM pragma_table_info('products') WHERE name = 'stock_quantity') AS not_null, (SELECT CAST(trim(dflt_value, '()') AS INTEGER) FROM pragma_table_info('products') WHERE name = 'stock_quantity') AS default_value FROM products"},
+ "8-05": {"ordered": true, "type": "dml", "check": "SELECT (SELECT type FROM sqlite_master WHERE name = 'monthly_sales') AS object_type, month, sales FROM monthly_sales WHERE month >= '2026-07' ORDER BY month"},
+ "8-06": {"ordered": true, "type": "dml", "check": "SELECT COUNT(*) AS kept_reviews, SUM(rating) AS rating_sum, (SELECT COUNT(*) FROM (SELECT user_id, product_id FROM reviews_unique GROUP BY user_id, product_id HAVING COUNT(*) > 1)) AS dup_pairs FROM reviews_unique"}
 }
