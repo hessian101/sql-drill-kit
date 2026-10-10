@@ -171,5 +171,108 @@
    "avg_birth_year"
   ],
   "row_count": 26
+ },
+ "3-01": {
+  "hash": "c9870996897918d7aff2e8b2d006c19ff22b72b5e6c97513fd60f19283cd68a8",
+  "columns": [
+   "product_id",
+   "name",
+   "quantity",
+   "unit_price",
+   "subtotal"
+  ],
+  "row_count": 3
+ },
+ "3-02": {
+  "hash": "d14403d4eea002e1c6e5b312bcadb2d42289346fab99a699b28d7fb35da95356",
+  "columns": [
+   "product_id",
+   "name",
+   "total_quantity"
+  ],
+  "row_count": 38
+ },
+ "3-03": {
+  "hash": "7446ba94f37b028cf5c661285ede624347980efb3f3b1e9d07461116cc469ce0",
+  "columns": [
+   "never_ordered_count"
+  ],
+  "row_count": 1
+ },
+ "3-04": {
+  "hash": "ffea469d10804e4a1453f34888e800200750715cbe7a66f2c6553a1090bf8e40",
+  "columns": [
+   "user_id",
+   "review_count"
+  ],
+  "row_count": 35
+ },
+ "3-05": {
+  "hash": "55b3a2c0d074900453b3f21730dd349af6b63a158d9ed919833f13c545733059",
+  "columns": [
+   "user_id",
+   "order_count",
+   "total_quantity"
+  ],
+  "row_count": 10
+ },
+ "3-06": {
+  "hash": "17b5189f0969c52cd770c571e85ddaa41174caa8dcc43220b3ffb7d2a2344d74",
+  "columns": [
+   "user_id",
+   "sep_order_count"
+  ],
+  "row_count": 32
+ },
+ "3-07": {
+  "hash": "745843331e5e9bc6625c1699d10c56983ee4433314fae4ba4932d7631abe0b19",
+  "columns": [
+   "user_id",
+   "order_count"
+  ],
+  "row_count": 50
+ },
+ "3-08": {
+  "hash": "f86aac86bbc7b41fd17fdd78124082329112e618953d31dae94414e412f5d41f",
+  "columns": [
+   "category_id",
+   "category_name",
+   "parent_name"
+  ],
+  "row_count": 11
+ },
+ "3-09": {
+  "hash": "dd3fc7aadb168721d28c45c1a761aaf0d92a11240986ab2a8475e4b23016df5f",
+  "columns": [
+   "parent_name",
+   "sales"
+  ],
+  "row_count": 4
+ },
+ "3-10": {
+  "hash": "668a20507923ca52a4ea36e766525bfe71fd6387c6c9a4ea3af331ac0a2a35a9",
+  "columns": [
+   "product_id",
+   "name",
+   "current_price",
+   "min_unit_price"
+  ],
+  "row_count": 21
+ },
+ "3-11": {
+  "hash": "685ed006ed74e1fe9d82852d0bd09e9d667dd3603750580ae7b37eb2e68af2cf",
+  "columns": [
+   "code",
+   "use_count",
+   "user_count"
+  ],
+  "row_count": 10
+ },
+ "3-12": {
+  "hash": "1b9f1746518896186dddfdd7b47ee05c06fa289aca15eb401d91fc224bc7bc98",
+  "columns": [
+   "same_day_buyers"
+  ],
+  "row_count": 1
  }
 }
